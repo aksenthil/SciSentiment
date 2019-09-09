@@ -1,0 +1,164 @@
+## Import library
+import pandas as pd
+import numpy as np
+from sklearn.metrics import confusion_matrix
+from sklearn.metrics import accuracy_score
+# load data
+dataset = pd.read_csv("C:/Users/s2759/Downloads/bill_authentication/bill_authentication.csv")
+print(dataset.head())
+# split data
+from sklearn.model_selection import train_test_split
+X = dataset.iloc[:, 0:4].values
+y = dataset.iloc[:, 4].values
+# split data into train and test sets
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=0)
+
+# Feature Scaling
+from sklearn.preprocessing import StandardScaler
+sc = StandardScaler()
+X_train = sc.fit_transform(X_train)
+X_test = sc.transform(X_test)
+
+
+# LogisticRegression
+
+# fit model
+from sklearn import linear_model
+Classifier = linear_model.LogisticRegression()
+Classifier.fit(X_train, y_train)
+# make predictions for test data
+y_pred = Classifier.predict(X_test)
+predictions = [round(value) for value in y_pred]
+# evaluate predictions
+cm = confusion_matrix(y_test, predictions)
+print(cm)
+accuracy=accuracy_score(y_test,predictions)
+print("Accuracy: %.2f%%" % (accuracy * 100.0))
+
+# DecisionTree Classifier
+
+# fit model
+from sklearn.tree import DecisionTreeClassifier
+Classifier = DecisionTreeClassifier()
+Classifier.fit(X_train, y_train)
+# make predictions for test data
+y_pred = Classifier.predict(X_test)
+predictions = [round(value) for value in y_pred]
+# evaluate predictions
+cm = confusion_matrix(y_test, predictions)
+print(cm)
+accuracy=accuracy_score(y_test,predictions)
+print("Accuracy: %.2f%%" % (accuracy * 100.0))
+
+# GradientBoosting Classifier
+
+# fit model
+from sklearn.ensemble import GradientBoostingClassifier
+Classifier = GradientBoostingClassifier(n_estimators=100,max_depth=5)
+Classifier.fit(X_train, y_train)
+# make predictions for test data
+y_pred = Classifier.predict(X_test)
+predictions = [round(value) for value in y_pred]
+# evaluate predictions
+cm = confusion_matrix(y_test, predictions)
+print(cm)
+accuracy=accuracy_score(y_test,predictions)
+print("Accuracy: %.2f%%" % (accuracy * 100.0))
+
+# KNeighbors Classifier
+
+# fit model
+from sklearn.neighbors import KNeighborsClassifier
+Classifier = KNeighborsClassifier(n_neighbors=3)
+Classifier.fit(X_train, y_train)
+# make predictions for test data
+y_pred = Classifier.predict(X_test)
+predictions = [round(value) for value in y_pred]
+# evaluate predictions
+cm = confusion_matrix(y_test, predictions)
+print(cm)
+accuracy=accuracy_score(y_test,predictions)
+print("Accuracy: %.2f%%" % (accuracy * 100.0))
+
+# svm Classifier
+
+# fit model
+from sklearn import svm
+Classifier = svm.LinearSVC(random_state=20)
+Classifier.fit(X_train, y_train)
+# make predictions for test data
+y_pred = Classifier.predict(X_test)
+predictions = [round(value) for value in y_pred]
+# evaluate predictions
+cm = confusion_matrix(y_test, predictions)
+print(cm)
+accuracy=accuracy_score(y_test,predictions)
+print("Accuracy: %.2f%%" % (accuracy * 100.0))
+
+# Naive_bayes
+
+# fit model
+from sklearn.naive_bayes import GaussianNB
+Classifier = GaussianNB()
+Classifier.fit(X_train, y_train)
+# make predictions for test data
+y_pred = Classifier.predict(X_test)
+predictions = [round(value) for value in y_pred]
+# evaluate predictions
+cm = confusion_matrix(y_test, predictions)
+print(cm)
+accuracy=accuracy_score(y_test,predictions)
+print("Accuracy: %.2f%%" % (accuracy * 100.0))
+
+# RandomForest Classifier
+
+# fit model
+from sklearn.ensemble import RandomForestRegressor
+Classifier = RandomForestRegressor(n_estimators=20, random_state=0)
+Classifier.fit(X_train, y_train)
+# make predictions for test data
+y_pred = Classifier.predict(X_test)
+predictions = [round(value) for value in y_pred]
+# evaluate predictions
+cm = confusion_matrix(y_test, predictions)
+print(cm)
+accuracy=accuracy_score(y_test,predictions)
+print("Accuracy: %.2f%%" % (accuracy * 100.0))
+
+# XGB Classifier
+
+# fit model
+from xgboost import XGBClassifier
+Classifier = XGBClassifier()
+Classifier.fit(X_train, y_train)
+# make predictions for test data
+y_pred = Classifier.predict(X_test)
+predictions = [round(value) for value in y_pred]
+# evaluate predictions
+accuracy=accuracy_score(y_test,predictions)
+cm = confusion_matrix(y_test, predictions)
+print(cm)
+print("Accuracy: %.2f%%" % (accuracy * 100.0))
+
+
+# Neural Network using Keras for Classification
+
+from keras import Sequential
+from keras.layers import Dense
+classifier = Sequential()
+#First Hidden Layer
+classifier.add(Dense(4, activation='relu', kernel_initializer='random_normal', input_dim=4))
+#Second  Hidden Layer
+classifier.add(Dense(4, activation='relu', kernel_initializer='random_normal'))
+#Output Layer
+classifier.add(Dense(1, activation='sigmoid', kernel_initializer='random_normal'))
+#Compiling the neural network
+classifier.compile(optimizer ='adam',loss='binary_crossentropy', metrics =['accuracy'])
+classifier.fit(X_train,y_train, batch_size=10,epochs=5)
+# eval_model=classifier.evaluate(X_train, y_train)
+y_pred=classifier.predict(X_test)
+y_pred =(y_pred>0.5)
+cm = confusion_matrix(y_test, y_pred)
+print(cm)
+accuracy=accuracy_score(y_test,y_pred)
+print("Accuracy: %.2f%%" % (accuracy * 100.0))
